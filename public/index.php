@@ -1,5 +1,5 @@
 <?php
-
+use FastRoute\RouteCollector;
 use Poo\Cd;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -7,6 +7,10 @@ use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 
 require __DIR__ . '/../vendor/autoload.php';
+
+// Asegúrate de incluir el archivo que contiene la clase Verificadora
+require_once __DIR__ . '/../src/poo/Verificadora.php';
+
 
 // Crear la aplicación
 $app = AppFactory::create();
@@ -22,14 +26,18 @@ $app->get('/', function (Request $request, Response $response, array $args): Res
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-// Grupo de rutas para json_bd
-$app->group('/json_bd', function(RouteCollectorProxy $group) {
-    $group->get('/', \Poo\Cd::class . ':TraerTodos');
-    $group->post('/create', \Poo\Cd::class . ':Crear');
-    $group->put('/update/{id}', \Poo\Cd::class . ':Actualizar');
-    $group->delete('/delete/{id}', \Poo\Cd::class . ':Borrar');
-});
 
+// Ruta de login
+$app->post('/login', \Verificadora::class . ':VerificarUsuario')->add(\Verificadora::class . ':ValidarParametrosUsuario');
+$app->get('/login/test', \Verificadora::class . ':ObtenerDataJWT')->add(\Verificadora::class . ':ChequearJWT');
+
+require_once __DIR__ . '/../src/clases/cd.php';
+
+
+
+$app->group('/json_bd',function(RouteCollectorProxy $grupo)
+{
+    $grupo->get('/', Cd::class . ':TraerTodos');
+});
 // Ejecutar la aplicación
 $app->run();
-?>

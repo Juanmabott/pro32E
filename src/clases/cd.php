@@ -10,6 +10,8 @@ class Cd
 {
     public static function traerTodosLosCd()
     {
+        echo "asd";
+
         $objetoAccesoDato = AccesoDatosCD::dameUnObjetoAcceso();
         $consulta = $objetoAccesoDato->retornarConsulta("SELECT id, titel AS titulo, interpret AS interprete, jahr AS anio FROM cds");
         $consulta->execute();
@@ -29,7 +31,6 @@ class Cd
         $titulo = $parsedBody['titulo'];
         $interprete = $parsedBody['interprete'];
         $anio = $parsedBody['anio'];
-
         $objetoAccesoDato = AccesoDatosCD::dameUnObjetoAcceso();
         $consulta = $objetoAccesoDato->retornarConsulta("INSERT INTO cds (titel, interpret, jahr) VALUES (:titulo, :interprete, :anio)");
         $consulta->bindValue(':titulo', $titulo, PDO::PARAM_STR);
@@ -48,7 +49,6 @@ class Cd
         $titulo = $parsedBody['titulo'];
         $interprete = $parsedBody['interprete'];
         $anio = $parsedBody['anio'];
-
         $objetoAccesoDato = AccesoDatosCD::dameUnObjetoAcceso();
         $consulta = $objetoAccesoDato->retornarConsulta("UPDATE cds SET titel = :titulo, interpret = :interprete, jahr = :anio WHERE id = :id");
         $consulta->bindValue(':titulo', $titulo, PDO::PARAM_STR);
@@ -64,7 +64,6 @@ class Cd
     public function Borrar(Request $request, Response $response, array $args): Response
     {
         $id = $args['id'];
-
         $objetoAccesoDato = AccesoDatosCD::dameUnObjetoAcceso();
         $consulta = $objetoAccesoDato->retornarConsulta("DELETE FROM cds WHERE id = :id");
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
@@ -74,4 +73,3 @@ class Cd
         return $response->withHeader('Content-Type', 'application/json');
     }
 }
-?>

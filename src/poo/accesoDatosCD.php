@@ -5,7 +5,7 @@ use PDOException;
 
 class AccesoDatosCD
 {
-    private static AccesoDatos $objetoAccesoDatos;
+    private static AccesoDatosCD $objetoAccesoDatos;
     private PDO $objetoPDO;
  
     private function __construct()
@@ -30,10 +30,10 @@ class AccesoDatosCD
         return $this->objetoPDO->prepare($sql);
     }
  
-    public static function dameUnObjetoAcceso() : AccesoDatos //singleton
+    public static function dameUnObjetoAcceso() : AccesoDatosCD //singleton
     {
         if (!isset(self::$objetoAccesoDatos)) {       
-            self::$objetoAccesoDatos = new AccesoDatos(); 
+            self::$objetoAccesoDatos = new AccesoDatosCD(); 
         }
  
         return self::$objetoAccesoDatos;        
